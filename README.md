@@ -1,4 +1,4 @@
-# ssc
+# ssc, Sound Shape Code, 音形码
 基于“音形码”的中文字符串相似度计算方法
 
 1. 音形码的思路来源于我看的这篇博客：https://blog.csdn.net/chndata/article/details/41114771 ，我对其中的思路进行了实现和优化。我自己写了一点大致的编码过程的图解示例放在文档src/图解.docx中可供大家查看，其中包含了最后运行代码时的截图效果。
