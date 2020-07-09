@@ -73,6 +73,43 @@ def getSoundCode(one_chi_word):
     return res
 
 
+def getSoundCodes(words):
+
+    shengmuStrs = pinyin(words, style=pypinyin.INITIALS, heteronym=False, strict=False)
+    yunmuStrFullStricts = pinyin(words, style=pypinyin.FINALS_TONE3, heteronym=False, strict=True)
+    soundCodes = []
+    for shengmuStr0, yunmuStrFullStrict0 in zip(shengmuStrs, yunmuStrFullStricts):
+        res = []
+        shengmuStr = shengmuStr0[0]
+        yunmuStrFullStrict = yunmuStrFullStrict0[0]
+
+        if shengmuStr not in shengmuDict:
+            shengmuStr = '0'
+
+        yindiao = '0'
+        if yunmuStrFullStrict[-1] in ['1','2','3','4']:
+            yindiao = yunmuStrFullStrict[-1]
+            yunmuStrFullStrict = yunmuStrFullStrict[:-1]
+
+        if yunmuStrFullStrict in yunmuDict:
+            #声母，韵母辅音补码，韵母，音调
+            res.append(yunmuDict[yunmuStrFullStrict])
+            res.append(shengmuDict[shengmuStr])
+            res.append('0')
+        elif len(yunmuStrFullStrict)>1:
+            res.append(yunmuDict[yunmuStrFullStrict[1:]])
+            res.append(shengmuDict[shengmuStr])
+            res.append(yunmuDict[yunmuStrFullStrict[0]])
+        else:
+            res.append('0')
+            res.append(shengmuDict[shengmuStr])
+            res.append('0')
+            
+        res.append(yindiao)
+        soundCodes.append(res)
+
+    return soundCodes
+
 
 def getShapeCode(one_chi_word):
     res = []
@@ -151,7 +188,34 @@ def getSSC(hanzi_sentence, encode_way):
             pass
         hanzi_sentence_ssc_list.append(ssc)
     return hanzi_sentence_ssc_list
-          
+
+      
+def getSSC_sentence(hanzi_sentence, encode_way, analyzer):
+
+    hanzi_sentence_ssc_list = []
+
+    result_seg = analyzer.seg(hanzi_sentence)
+    words = []
+    for term in result_seg:
+        words.append(term.word)
+
+    soundCodes = getSoundCodes(words)
+
+    for one_chi_word, soundCode in zip(hanzi_sentence, soundCodes):
+        if encode_way == "SOUND":
+            ssc = "".join(soundCode)
+        elif encode_way == "SHAPE":
+            shapeCode = getShapeCode(one_chi_word)
+            ssc = "".join(shapeCode)
+        elif encode_way == "ALL":
+            shapeCode = getShapeCode(one_chi_word)
+            ssc = "".join(soundCode + shapeCode)
+            
+        hanzi_sentence_ssc_list.append(ssc)
+
+    return hanzi_sentence_ssc_list
+
+
 if __name__=="__main__":
     """注意：
     1.声母最多2位，韵母最多3位
