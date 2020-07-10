@@ -42,28 +42,3 @@ if __name__=="__main__":
         print('变异词：', variabt_word)
     else:
         print('变异词没有找到')
-
-
-
-
-
-
-    # sentence = "我住在钻口"
-    # result_seg = analyzer.seg(sentence)
-    # words = []
-    # for term in result_seg:
-    #     words.append(term.word)
-    
-    # result = getSoundCode("差")
-    # result = pinyin("钻口", heteronym=False, strict=False)
-    # result = pinyin("出差错", style=pypinyin.INITIALS, heteronym=True, strict=False)
-    # result = pinyin("出", style=pypinyin.INITIALS, heteronym=False, strict=False)
-
-
-    # print(result_seg)
-    # print(words)
-    # # result = pinyin(words, style=pypinyin.INITIALS, heteronym=False, strict=False)
-    # result = pinyin(words, style=pypinyin.FINALS_TONE3, heteronym=False, strict=False)
-
-    # print(result)
-    # print(result[0][0])
